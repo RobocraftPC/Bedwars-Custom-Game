@@ -40,23 +40,23 @@ function TeamManager:server_onFixedUpdate()
 end
 
 function TeamManager.sv_setTeam(player, color)
-	g_teamManager.sv.teams[player.id] = color
+    g_teamManager.sv.teams[player.id] = color
     g_teamManager.storage:save(g_teamManager.sv)
     g_teamManager.sv.updateClientData = true
 
     local char = player.character
     char:setSwimming(not color)
-	char.publicData.waterMovementSpeedFraction = (not color and 5) or 1
+    char.publicData.waterMovementSpeedFraction = (not color and 5) or 1
 end
 
 function TeamManager.sv_setBed(color, exists, shape)
-	g_teamManager.sv.beds[color] = exists or yo_mama
+    g_teamManager.sv.beds[color] = exists or yo_mama
     g_teamManager.sv.teamSpawnpoints[color] = (sm.exists(shape) and shape.worldPosition) or g_teamManager.sv.teamSpawnpoints[color]
     g_teamManager.storage:save(g_teamManager.sv)
 end
 
 function TeamManager.sv_isBedExisting(color)
-	return g_teamManager.sv.beds[color]
+    return g_teamManager.sv.beds[color]
 end
 
 function TeamManager:sv_updateClientData()
@@ -86,11 +86,11 @@ function TeamManager.sv_getTeamsCount()
 
         for _, countedTeam in ipairs(teams) do
             if team == countedTeam then
-               goto continue
+                goto continue
             end
         end
-        teams[#teams+1] = team
-        ::continue::
+        teams[#teams + 1] = team
+        :: continue ::
     end
     return #teams
 end
@@ -107,11 +107,6 @@ function TeamManager.sv_getTeamSpawn(color)
     return g_teamManager.sv.teamSpawnpoints[color]
 end
 
-
-
-
-
-
 function TeamManager:client_onCreate()
     self.cl = {}
     self.cl.teams = {}
@@ -124,7 +119,7 @@ function TeamManager:client_onCreate()
 end
 
 function TeamManager:client_onClientDataUpdate(clientData, channel)
-	self.cl.teams = clientData.teams
+    self.cl.teams = clientData.teams
 end
 
 function TeamManager:client_onFixedUpdate()
@@ -132,7 +127,8 @@ function TeamManager:client_onFixedUpdate()
 
     for _, player in ipairs(sm.player.getAllPlayers()) do
         local char = player.character
-        if char and sm.exists(char) then --player ~= sm.localPlayer.getPlayer() and
+        if char and sm.exists(char) then
+            --player ~= sm.localPlayer.getPlayer() and
             local team = self.cl.teams[player.id]
             local showNameTag = (ownTeam == team and team) or (not ownTeam and team)
             char:setNameTag(showNameTag and (team .. player.name) or "")
